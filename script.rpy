@@ -7,6 +7,9 @@ define gordon = Character("Gordon Hobbs")
 define n = Character("Voice")
 define sailor = Character("Captain of the SS Essex County")
 define monster = Character("Unknown Creature")
+define cassidy = Character("George Cassidy")
+define turner = Character("Michael Turner")
+define coastguard = Character("Coastguard")
 
 # Set Gordon Hobb's skill levels
 
@@ -30,52 +33,47 @@ $ str = 85
 $ dex = 75
 $ pow = 65
 $ painting = 21
+$ luck = 27
 
 # The game starts here.
 
 label start:
 
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
-
     scene stormy sea
-
-
-    # These display lines of dialogue.
+    show gordon reg
 
     gordon "I am a Special Agent for the Bureau of Investigation. My current assignment in this godforsaken hell hole is keeping an eye out for any illegal activity conducted along the popular east coast shipping routes."
     gordon "So far, there's not been much to report, with the exception of one unmarked vessel spotted passing Rockport during a storm in early February, which seems to have vanished without a trace."
-    gordon "A fellow undercover agent and friend, Michael Turner, has been stationed up on Beacon Island under the name Michael Turner. What better place to keep an eye on passing ships than from a lighthouse?"
+    gordon "A fellow undercover agent and friend, Michael Turner, has been stationed up on Beacon Island. What better place to keep an eye on passing ships than from a lighthouse?"
     gordon "He got a message to me that he'd uncovered some sort of evidence of smuggling, but he didn't go into any details. He also asked to meet me in Rockport tomorrow morning, so here I am, on a late boat heading for our rendesvous."
     gordon "I really hope he's found something that would signal an end to my time here. This whole region gives me the creeps. Maybe it's just my imagination; maybe I've just been involved intoo many weird cases in the past."
     gordon "Ah, it's probably nothing. But if it is, why do I always get the feeling I'm being watched whenever I'm on the water?"
 
+    hide gordon reg
 
     n "April 12th, 1926, 8:15pm. The Beacon Island lighthouse off the shore of Folly Point, Massachusetts, ceased to cast its light over the region’s dangerous rocky waters about 15 minutes ago."
     n "As a result, the SS Essex County, a mixed passenger and cargo vessel on which you are traveling to Rockport, has foundered on the rocks and incurred considerable damage to its hull. The ship is sinking, and the crew hurries you toward one of the many small rowboats acting as the ship’s lifeboats."
 
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
-
-    #show sailor
+    show sailor
 
     sailor "Your best bet is to aim for Beacon Island."
     sailor "I doubt you'll make the mainland as a storm is brewing. You should have just enough time to reach the island before it hits."
 
-    #hide sailor
+    hide sailor
 
     n "Then, without another word, they shove you off into the dark, churning waters. All you hve to guide you is the small light shining at the base of the lighthouse's towering silhoutte."
 
     n "As you brave the roaring waters, your rowboat hits something hard in the dark waters. Twisted metal has become lodged on a nearby sandbank, while yet more lurks just below the surface."
     n "Can you find out any information about this? Please roll for Spot Hidden."
 
-    # Displays the dice roll results
+    # Dice roll results
 
     $ roll_result = renpy.random.randint(1,100)
     $ damage_result = renpy.random.randint(1,3)
+    $ roll_result4 = renpy.random.randint(1,4)
     $ roll_result6 = renpy.random.randint(1,6)
+
+    # Scene start
 
     if roll_result <= 65:
         jump success_scene1
@@ -172,7 +170,7 @@ label start:
         n "As you walk through the thicket, the feeling of being watched is further intensified. You catch your breath. As a federal agent, situations like this should not phase you."
         n "Eventually, you stumble across a hideously mangled body - that of Michael Turner. It is a bloody mess; his innards have been dragged from his body, slashed, and trampled into the dirt. Besides the corpse lies a shattered lantern. It is evident he died recently."
         n "This is your friend. You lose [roll_result6] sanity."
-    if roll_result6 > 5:
+    if roll_result6 >= 5:
         n "You are in pieces. You suffer a temporary sanity break as you mourn your friend who's been violently murdered. All you want is to leave this place."
         gordon "I can't take this anymore. This place. You people. I'm going, and there's nothing you can do to stop me!"
         gordon "Who is that?"
@@ -266,7 +264,7 @@ label start:
 
     label choice_generator4:
     if roll_result <= 25:
-        n "Success! You are able to fix the generator! Mr. Handyman!"
+        n "Success! You are able to fix the generator!"
         jump choice_cottage
     else:
         n "You failed. Might as well go to the cottage, the rain is only getting worse."
@@ -298,6 +296,9 @@ label start:
         n "Do you see anything else in the hallway? Roll a Spot Hidden."
     if roll_result <= 65:
         n "You see two bullets lodged in the hallway floor."
+        jump eighth_scene
+    else:
+        n "Failure! You do not see anything else of interest in the hallway."
         jump eighth_scene
 
     label eighth_scene:
@@ -351,13 +352,13 @@ label start:
         n "Success! You can tell that the shadow's eyes look bulbous and appear to be placed almost to the side of its head, similar to the anatomy of a fish or a frog."
         jump choice_painting
     else:
-        n "Failure! You do not receive new information."
+        n "Failure! You do not receive new information about the shadow in the painting."
         jump choice_painting
     if roll_result <= 21:
         n "Success! You realize that this piece was executed in a hurry, it lacks the care and finesse of the other paintings on the table."
         jump choice_painting
     else:
-        n "Failure! You do not receive new information."
+        n "Failure! You do not receive new information about the painting itself."
         jump choice_painting
 
     label choice_painting:
@@ -385,18 +386,256 @@ label start:
     label choice_yes3:
     if roll_result <= 85:
         n "Success! You manage to force the drawer open. It contains a small journal belonging to George Cassidy. There is a rough sketch of an obelisk on the journal's cover."
-        #n "As you read the journal,
+        n "Do you want to read the journal?"
+    menu:
+        "Yes.":
+            jump choice_journal
+        "No.":
+            jump returntohallway
+
+    label choice_journal:
+    # show cassidy
+        cassidy "February 13th, 1926. I found something on one of my walks. A coin! I kept walking and found another then another! I know it’s gold. Found some mechanical parts as well. Looks like it might be from a ship. Must have gone down recently, but I don’t recall hearing anything about no wreck of late."
+        cassidy "I better keep this quiet. Don’t want the other two here to get a slice of the action. I will keep this journal as a means of documenting my findings. This has to be worth a mint!"
+        cassidy "February 16th, 1926. That coin catalog I bought in Folly Point is useless. One thing I know is that the coins are old. Real old. I've asked if I can stay on for as long as I can until I'm sure there's nothing left here for me to line my pockets. And I have to find a good lead on these coins and go where the money takes me."
+        cassidy "Maybe I should write to some of my old 'colleagues' to see if they can help. Should probably try some of those fancy antique stores in Rockport, while I'm at it."
+        cassidy "March 10th, 1926. The coins are getting hard to find. The two new crew members aren't helping matters. Makes it difficult to search without being noticed. Hope they don't cause me any trouble. Even so. I've filled a small purse which I keep on me at all times."
+        cassidy "April 3rd, 1926. I've got a good lead now. I'll be sending one more letter to Innsmouth then I'm confident I can get off this stinking island for good. I think Michael is watching me. I've bought a gun just in case."
+        cassidy "April 11th, 1926. Smith said he will leave the lighthouse tomorrow morning. He says he doesn't care if it voids his contract--he's had enough of this island and everything on it. Least that's one less pair of eyes wacthing me. Still stuck with that sneak, Michael, though."
+        cassidy "Smith says the radio busted again halfway through talking to the bosses. Said he'd fix it before he leaves. Counted my coins just to be sure he didn't lift any off me in my sleep. I've seen Michael peering out the window, spying my daily walks. I'll have to be a bit more careful."
+        cassidy "April 12th, 1926. Smith left without a word. Me and Michael didn't even see him go. Didn't take his paintings with him, which is a bit odd. Lousy rat didn't even repair the radio before he left. I'll get to it later tonight. Michael has gone to check something outside. Seems paranoid."
+        cassidy "Think there's more than just tobacco in that pipe of his. At least I get more time to write. No word from -"
+    # hide cassidy
+        n "The last entry cuts off abruptly, as if Cassidy was interrupted while writing it."
+    show gordon
+    gordon "What is going on in this island? Michael? Paranoid? Where is everybody?"
+    jump returntohallway
+    hide gordon
+
 
     label returntohallway:
+        menu:
+            "1 (door closest to you on the left)":
+                jump choice_study
+            "2 (door closest to you on the right)":
+                jump choice_bunkroom
+            "3 (door farther on the left)":
+                jump choice_kitchen
+            "4 (door farther on the right)":
+                jump choice_larder
+            "5 Go up the winding stairs to the lighthouse service room.":
+                jump serviceroom
+
+    label choice_bunkroom:
+        n "You open the door. This room looks like a bunkroom. It contains three neatly-made beds. A large pile of books is stacked tidily in one corner of the room. There are also three large cupboards, each holding soap towels, fresh bedding, and extra blankets."
+        n "Those belonging to Turner and Cassidy contain warious articles of clothing along with a few small personal effects; the one belonging to Smith contains only the linen and towels."
+        n "Do you see anything in the room? Roll for Spot Hidden."
+    if roll_result <= 75:
+        jump bunkroom1
+    else:
+        jump bunkroom2
+
+    label bunkroom1:
+        n "Success! Your investigative skills as a Bureau Agent has helped you find one gold coin, six loose bullets, and a pocket-sized notebook stuffed in Turner's mattress."
+        n "Open the notebook?"
     menu:
-        "1 (door closest to you on the left)":
-            jump choice_study
-        "2 (door closest to you on the right)":
-            jump choice_bunkroom
-        "3 (door farther on the left)":
-            jump choice_kitchen
-        "4 (door farther on the right)":
-            jump choice_larder
+        "Yes.":
+            jump notebook
+        "No.":
+            jump returntohallway
+
+    label bunkroom2:
+        n "Failure! You cannot find more information from the bunkroom."
+        jump returntohallway
+
+    label notebook:
+        #show turner
+        turner "George Cassidy previous criminal record. Involved in smuggling?"
+        turner "Lights on water. Small rowboat?"
+        turner "Found ship parts on north shore."
+        turner "Found gold coin on north shore."
+        turner "Bigger than just bootleg moonshine. What is going on?"
+        turner "Smith said saw someone in trees and peering through window."
+        turner "Men on island at night?"
+        turner "Croaking noise?"
+        turner "Frogs?"
+        #hide turner
+        show gordon
+        gordon "Michael..."
+        hide gordon
+        jump returntohallway
+
+    label choice_kitchen:
+        n "The door to the kitchen is slightly open. You see the pool of blood leading from the kitchen to the hallway. You push open the door."
+        n "The kitchen has some dirty plates and a saucepot in the sink, a table with three chairs, and three doors: one leading outside, one to the hallway, and one to the study. A small wood-fired stove is located in the far corner; a still warm kettle sits on the hearth next to it."
+        n "One of the chairs lie broken on the floor; there is a small pool of blood on the floor beside it."
+        n "To learn more about the scene, roll for Intelligence."
+    if roll_result <= 65:
+        jump kitchen1
+    else:
+        jump kitchen2
+
+    label kitchen1:
+        n "Success! From the way the chair looks, you can infer that it may have been used as a weapon."
+        jump kitchen3
+
+    label kitchen2:
+        n "Failure! You cannot find more information in the room."
+        jump kitchen3
+
+    label kitchen3:
+        n "Is there anything unusual about the blood? Can you find out more information? Roll for Medicine."
+    if roll_result <= 35:
+        n "The pool of blood is recent and formed within the last hour. There is something not quite right about the blood, like it may not be human in origin."
+        jump returntohallway
+    else:
+        n "You fail to recover more information."
+        jump returntohallway
+
+    label choice_larder:
+        n "You open the door. You sneeze as the dust hits your nose. You open your eyes to a room filled with shelves of food, all neatly stacked with all manner of dried, canned, and preserved foods -- enough to see three people through if cut off from the mainland for several months."
+        jump returntohallway
+
+    label serviceroom:
+        n "As you climb the stairs, you eventually reach the lighthouse's service room, located immediately below the lantern room. The mechanism used to turn the lamp can be seen mounted in the ceiling, and from the noise, it appears to still be working."
+        n "A separate set of steps leads up through a trapdoor into the lantern room above. There are several boxes stored here; each contains a replacement bulb for the lighthouse's beacon."
+        n "There is also a small workbench and a tool bag. On the workbench is a log of the various service checks performed on the lighthouse."
+        n "Opposite the workbench is a table with a radio set in a semi-state of disrepair."
+        n "what is your next course of action?"
+        jump serviceroomchoices
+
+    label serviceroomchoices:
+    menu:
+        "Read the lighthouse's service logs.":
+            jump servicelogs
+        "Try to fix the radio.":
+            jump fixradio
+        "Go up the lantern room.":
+            jump lanternroom
+
+    label servicelogs:
+        n "Majority of the checks are purely routine; however, one entry stands out. On February 12th, 1926, wiring problems caused the lighthouse's lamp bulb to prematurely burn out."
+        n "The log records how the electrical short cauesd by the bulb's failure, coupled with the severe storm, hampered the repairs, meaning the lighthouse was in darkness for several hours."
+        jump serviceroomchoices
+
+    label fixradio:
+        n "A successful Electric Repair roll fixes the radio with ease. Roll for Electric Repair."
+    if roll_result <= 50:
+        jump fixedradio
+    else:
+        "Failure! You failed to fix the radio."
+        jump serviceroomchoices
+
+    label fixedradio:
+        n "You fixed the radio. You may call for help to the local coastguard."
+    n "Ring..."
+    show gordon reg
+    gordon "Hello? My name is Gordon Hobbs, I work for the Bureau of Investigation. You need to send rescue to Beacon Island immediately! There are - "
+    hide gordon reg
+    show coastguard
+    coastguard "Hello?"
+    hide coastguard
+    show gordon reg
+    gordon "Hello? Can you hear me?"
+    gordon "Hello? Please come to Beacon Island!"
+    n "The line disconnects."
+    hide gordon reg
+    show gordon mad
+    gordon "Agh!"
+    gordon "I've got to get upstairs."
+    jump lanternroom
+
+    label lanternroom:
+        n "You reach the lantern room to be greeted by a wet, bloody scene. Two panes of glass in the lantern room's windows have been broken somehow; their shattered remains crunch underfoot."
+        n "The rain blows in through the gaps, making the metal decking slippery underfoot. Adding to the slipperiness is blood from the corpses of two men, along with that from two bizarre fish-creatures which lie inside the room's narrow confines."
+        n "One of the dead fish-things is latched onto on of the men's necks by its teeth, even in death."
+        n "You lose [roll_result6] sanity."
+    if roll_result6 <= 5:
+        jump lanternroom1
+    else:
+        jump lanternroom2
+
+    label lanternroom1:
+        n "Despite the gruesome scene before you, you manage to calm your nerves. You are a Bureau Agent after all."
+        n "You start searching the various corpses around you. The body near the stairs is very strange-looking. The man, garbed in a heavy, hooded raincoat, appears to have a narrow head and pronounced flaps of skin around his neck and jowls."
+        n "He also seems to be suffering from some sort of skin condition, going by his gray, rough complexion."
+        n "His bulging, watery eyes stare sightlessly in the direction of Cassidy's corpse."
+        n "To find more information from the body, roll for Zoology."
+    if roll_result <= 38:
+        jump fishbody1
+    else:
+        n "Failure! You do not find more information about the corpse."
+        jump flr1
+
+    label fishbody1:
+        n "Success! You find out that the creature has been shot twice, and that these bullet wounds led to his death."
+        n "A dead fish-creature lies beside the strange man. Both it and the one attached to Cassidy's corpse have been shot as well -- one through the eye, and one through its belly."
+        n "Beyond the creatures' obvious fishlike appearance and amphibious nature, this species of fish is not recorded anywhere in any book known to you."
+        n "The bizzare piscine-things look like they would be extremely mobile on land due to their muscular legs, and perfectly at home in the water due to their fins and gills."
+        jump lanternroom3
+
+    label flr1:
+        n "A dead fish-creature lies beside the strange man. Both it and the one attached to Cassidy's corpse have been shot as well -- on through the eye, and one through its belly."
+        n "Beyond the creatures' obvious fishlike appearance and amphibious nature, this species of fish is not recorded anywhere in any book known to you."
+        n "The bizzare piscine-things look like they would be extremely mobile on land due to their muscular legs, and perfectly at home in the water due to their fins and gills."
+        jump lanternroom3
+
+    label lanternroom3:
+        n "Can you find information about these bodies? Roll for Zoology again."
+    if roll_result <= 38:
+        n "Success! You see that the bullets which entered both creatures only killed them because they went into the softest, fleshiest, most vulnerable parts of their bodies."
+        n "The rest of their scaly exteriors, although penetrable, are coarse and tough, no doubt providing the creatures with a form of natural armor. Evidently, Cassidy was a 'lucky' shot, for all the good it did him."
+        jump lanterncassidy
+    else:
+        n "Failure! You fail to find out more information."
+        jump lanterncassidy
+
+    label lanterncassidy:
+        n "The final corpse is that belonging to Cassidy. Hidden under the late lighthouse keeper's shirt is a heavy purse full of the strange gold coins, tied around his neck on a thick leather cord. A six-shooter, a Colt M1877, is held firmly in his still-warm hands."
+        n "All of the bullets in the chamber have been spent. The revolver appears to match the size and shape of the one missing from the desk drawer downstairs. Taking into account the two bullets in the strange man, and the two in the fish-creatures, two bullets are still unaccounted for."
+        n "Can you find the other bullets? Roll for Spot Hidden."
+    if roll_result >= 65:
+        n "Success! You identify a bullet hole in the lamp's lens; the bullet which caused it appears to have shattered the bulb inside before carrying on through to smash one of the lantern room's missing panes of glass."
+        n "This, at least, explains why the lighthouse beacon stopped working at 8 pm this evening. It can easily be surmised that the second broken pane was destroyed by the other bullet."
+        jump startofattack
+    else:
+        n "Failure! You fail to find the missing two bullets."
+        jump startofattack
+
+    label startofattack:
+    show gordon reg
+    gordon "Damn it. I've got to call for help! What the fuck is going on here?"
+    n "Wait. Did you lock the door to the cottage? Roll for Luck."
+    if roll_result <= 27:
+        n "Lucky! You remember that you did lock the door after entering the cottage."
+        jump lockeddoor
+    else:
+        n "Uh oh."
+        jump unlockeddoor
+
+    label lockeddoor:
+        n "You hear banging from the front door downstairs. What is your course of action?"
+    menu:
+        "Barricade yourself and hope rescue gets to you first before whatever this thing is.":
+            jump barricade
+        "Go downstairs and position yourself for a surprise attack.":
+            jump fight
+
+    label barricade:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
