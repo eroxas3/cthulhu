@@ -6,7 +6,7 @@
 define gordon = Character("Gordon Hobbs")
 define n = Character("Voice")
 define sailor = Character("Captain of the SS Essex County")
-define monster = Character("Unknown Creature")
+define youngling = Character("Unknown Creature")
 define cassidy = Character("George Cassidy")
 define turner = Character("Michael Turner")
 define coastguard = Character("Coastguard")
@@ -39,7 +39,7 @@ $ luck = 27
 
 label start:
 
-    scene stormy sea
+    show stormy sea
     show gordon reg
 
     gordon "I am a Special Agent for the Bureau of Investigation. My current assignment in this godforsaken hell hole is keeping an eye out for any illegal activity conducted along the popular east coast shipping routes."
@@ -61,7 +61,7 @@ label start:
 
     hide sailor
 
-    n "Then, without another word, they shove you off into the dark, churning waters. All you hve to guide you is the small light shining at the base of the lighthouse's towering silhoutte."
+    n "Then, without another word, they shove you off into the dark, churning waters. All you have to guide you is the small light shining at the base of the lighthouse's towering silhoutte."
 
     n "As you brave the roaring waters, your rowboat hits something hard in the dark waters. Twisted metal has become lodged on a nearby sandbank, while yet more lurks just below the surface."
     n "Can you find out any information about this? Please roll for Spot Hidden."
@@ -69,7 +69,7 @@ label start:
     # Dice roll results
 
     $ roll_result = renpy.random.randint(1,100)
-    $ damage_result = renpy.random.randint(1,3)
+    $ roll_result3 = renpy.random.randint(1,3)
     $ roll_result4 = renpy.random.randint(1,4)
     $ roll_result6 = renpy.random.randint(1,6)
 
@@ -108,13 +108,17 @@ label start:
         jump fthird_scene
 
     label sthird_scene:
+        hide stormy sea
+        show sandbank
         n "You get to the island quicker and stop on the small pier and dock."
         n "As you arrive, you hear a faint churning of machinery nearby."
         jump fourth_scene
 
     label fthird_scene:
         n "You are able to get yourself out from under the water. However, the intensity of the waves has knocked the wind out of you. Roll 1D3 for damage."
-     #damage_result
+     #roll_result3
+        hide stormy sea
+        show sandbank
         n "You wash up on the island on the sandbank near the dock. As you arrive, you hear a faint churning of machinery nearby."
         jump fourth_scene
 
@@ -126,7 +130,7 @@ label start:
         jump fifth_scene
 
     label sfifth_scene:
-        n "You are able to pick up that the sound suggests an electric generator nearby."
+        n "Success! You realize that the churning sound suggests there is an electric generator nearby."
         n "You see a path going south. As you walk through the path, you can't help but feel like you are being watched."
         jump sixth_scene
 
@@ -136,6 +140,8 @@ label start:
         jump sixth_scene
 
     label sixth_scene:
+        hide sandbank
+        show outside
         n "You come across the lighthouse cottage entrance, with its front door slightly ajar, and a steady glow can be seen coming from within. The path continues around to the back of the lighthouse."
         n "As you inspect the entrance, you see small, muddy, animal-like footprints in the front of the main cottage door. Beneath these are distinct boot prints."
         n "Does this species seem familiar to you? Roll Zoology."
@@ -167,12 +173,16 @@ label start:
             jump choice_sheds
 
     label choice1_yes:
+        hide outside
+        show forest
         n "As you walk through the thicket, the feeling of being watched is further intensified. You catch your breath. As a federal agent, situations like this should not phase you."
         n "Eventually, you stumble across a hideously mangled body - that of Michael Turner. It is a bloody mess; his innards have been dragged from his body, slashed, and trampled into the dirt. Besides the corpse lies a shattered lantern. It is evident he died recently."
         n "This is your friend. You lose [roll_result6] sanity."
     if roll_result6 >= 5:
         n "You are in pieces. You suffer a temporary sanity break as you mourn your friend who's been violently murdered. All you want is to leave this place."
+        show gordon insane
         gordon "I can't take this anymore. This place. You people. I'm going, and there's nothing you can do to stop me!"
+        #creak*
         gordon "Who is that?"
         #*gunshot*
         n "Game over. Restart."
@@ -203,11 +213,17 @@ label start:
             jump choice_path
 
     label choice_south:
+        hide outside
+        hide forest
+        show south
         n "You continue along the well-trodden path south through the forest and find another worn-out pier. Tied to it is a yellow-painted rowboat. The lights of a small town can be seen in the distance, and some of Rockport's famous granite quarries can be spotted to the south-west."
         n "There is no way out of this island as long as the storm is raging on. You are stuck here."
         jump choice_path
 
     label choice_path:
+        hide forest
+        hide south
+        show outside
         n "As you make your way out of the thicket, you return to the footpath you followed upon arriving on the island."
         n "The footpath soon branches. One leads back to the cottage and the other leads to two sheds - a smaller shed where you can hear the same churning of machinery earlier and a larger one."
         n "Go back to the cottage or explore the sheds?"
@@ -219,7 +235,10 @@ label start:
             jump choice_sheds
 
     label choice_sheds:
-
+        hide forest
+        hide south
+        hide outside
+        show sheds
     menu:
         "Smaller shed.":
             jump choice_workshop
@@ -288,6 +307,10 @@ label start:
         jump choice_generator2
 
     label choice_cottage:
+        hide forest
+        hide sheds
+        hide outside
+        show cottage
         n "You make your way into the cottage. The rain is getting worse, after all."
         n "You fully open the door. Beyond the partially open front door, a hallway leads to the cottage's four rooms, two on each of the wide passageway."
         n "At the end of the hallway is a winding staircase leading to the lighthouse's service room. Although all of the rooms appear to be fitted with electric light bulbs, only the study's lights are currently turned on."
@@ -321,8 +344,15 @@ label start:
             jump choice_kitchen
         "4 (door farther on the right)":
             jump choice_larder
+        "5 Go up the winding stairs to the lighthouse service room.":
+            jump serviceroom
 
     label choice_study:
+        hide cottage
+        hide kitchen
+        hide larder
+        hide bunkroom
+        show study
         n "You open the door to what looks like a study. It contains three armchairs, located in roughly the center of the room. In addition to the hall doorway, there is another door leading to the third, bloodied room."
         n "In terms of furniture, besides the armchairs, there is a table to the left of the hall door and a roll-writing desk on the outer wall, close to the other door. Both have their own chair next to them. The one by the writing desk currently lies on the floor."
         n "Can you deduce more information from this scene? Roll an Intelligence."
@@ -394,24 +424,23 @@ label start:
             jump returntohallway
 
     label choice_journal:
-    # show cassidy
-        cassidy "February 13th, 1926. I found something on one of my walks. A coin! I kept walking and found another then another! I know it’s gold. Found some mechanical parts as well. Looks like it might be from a ship. Must have gone down recently, but I don’t recall hearing anything about no wreck of late."
-        cassidy "I better keep this quiet. Don’t want the other two here to get a slice of the action. I will keep this journal as a means of documenting my findings. This has to be worth a mint!"
-        cassidy "February 16th, 1926. That coin catalog I bought in Folly Point is useless. One thing I know is that the coins are old. Real old. I've asked if I can stay on for as long as I can until I'm sure there's nothing left here for me to line my pockets. And I have to find a good lead on these coins and go where the money takes me."
-        cassidy "Maybe I should write to some of my old 'colleagues' to see if they can help. Should probably try some of those fancy antique stores in Rockport, while I'm at it."
-        cassidy "March 10th, 1926. The coins are getting hard to find. The two new crew members aren't helping matters. Makes it difficult to search without being noticed. Hope they don't cause me any trouble. Even so. I've filled a small purse which I keep on me at all times."
-        cassidy "April 3rd, 1926. I've got a good lead now. I'll be sending one more letter to Innsmouth then I'm confident I can get off this stinking island for good. I think Michael is watching me. I've bought a gun just in case."
-        cassidy "April 11th, 1926. Smith said he will leave the lighthouse tomorrow morning. He says he doesn't care if it voids his contract--he's had enough of this island and everything on it. Least that's one less pair of eyes wacthing me. Still stuck with that sneak, Michael, though."
-        cassidy "Smith says the radio busted again halfway through talking to the bosses. Said he'd fix it before he leaves. Counted my coins just to be sure he didn't lift any off me in my sleep. I've seen Michael peering out the window, spying my daily walks. I'll have to be a bit more careful."
-        cassidy "April 12th, 1926. Smith left without a word. Me and Michael didn't even see him go. Didn't take his paintings with him, which is a bit odd. Lousy rat didn't even repair the radio before he left. I'll get to it later tonight. Michael has gone to check something outside. Seems paranoid."
-        cassidy "Think there's more than just tobacco in that pipe of his. At least I get more time to write. No word from -"
-    # hide cassidy
-        n "The last entry cuts off abruptly, as if Cassidy was interrupted while writing it."
-    show gordon
+    show cassidy
+    cassidy "February 13th, 1926. I found something on one of my walks. A coin! I kept walking and found another then another! I know it’s gold. Found some mechanical parts as well. Looks like it might be from a ship. Must have gone down recently, but I don’t recall hearing anything about no wreck of late."
+    cassidy "I better keep this quiet. Don’t want the other two here to get a slice of the action. I will keep this journal as a means of documenting my findings. This has to be worth a mint!"
+    cassidy "February 16th, 1926. That coin catalog I bought in Folly Point is useless. One thing I know is that the coins are old. Real old. I've asked if I can stay on for as long as I can until I'm sure there's nothing left here for me to line my pockets. And I have to find a good lead on these coins and go where the money takes me."
+    cassidy "Maybe I should write to some of my old 'colleagues' to see if they can help. Should probably try some of those fancy antique stores in Rockport, while I'm at it."
+    cassidy "March 10th, 1926. The coins are getting hard to find. The two new crew members aren't helping matters. Makes it difficult to search without being noticed. Hope they don't cause me any trouble. Even so. I've filled a small purse which I keep on me at all times."
+    cassidy "April 3rd, 1926. I've got a good lead now. I'll be sending one more letter to Innsmouth then I'm confident I can get off this stinking island for good. I think Michael is watching me. I've bought a gun just in case."
+    cassidy "April 11th, 1926. Smith said he will leave the lighthouse tomorrow morning. He says he doesn't care if it voids his contract--he's had enough of this island and everything on it. Least that's one less pair of eyes wacthing me. Still stuck with that sneak, Michael, though."
+    cassidy "Smith says the radio busted again halfway through talking to the bosses. Said he'd fix it before he leaves. Counted my coins just to be sure he didn't lift any off me in my sleep. I've seen Michael peering out the window, spying my daily walks. I'll have to be a bit more careful."
+    cassidy "April 12th, 1926. Smith left without a word. Me and Michael didn't even see him go. Didn't take his paintings with him, which is a bit odd. Lousy rat didn't even repair the radio before he left. I'll get to it later tonight. Michael has gone to check something outside. Seems paranoid."
+    cassidy "Think there's more than just tobacco in that pipe of his. At least I get more time to write. No word from -"
+    hide cassidy
+    n "The last entry cuts off abruptly, as if Cassidy was interrupted while writing it."
+    show gordon reg
     gordon "What is going on in this island? Michael? Paranoid? Where is everybody?"
+    hide gordon reg
     jump returntohallway
-    hide gordon
-
 
     label returntohallway:
         menu:
@@ -427,6 +456,11 @@ label start:
                 jump serviceroom
 
     label choice_bunkroom:
+        hide cottage
+        hide study
+        hide larder
+        hide kitchen
+        show bunkroom
         n "You open the door. This room looks like a bunkroom. It contains three neatly-made beds. A large pile of books is stacked tidily in one corner of the room. There are also three large cupboards, each holding soap towels, fresh bedding, and extra blankets."
         n "Those belonging to Turner and Cassidy contain warious articles of clothing along with a few small personal effects; the one belonging to Smith contains only the linen and towels."
         n "Do you see anything in the room? Roll for Spot Hidden."
@@ -437,7 +471,7 @@ label start:
 
     label bunkroom1:
         n "Success! Your investigative skills as a Bureau Agent has helped you find one gold coin, six loose bullets, and a pocket-sized notebook stuffed in Turner's mattress."
-        n "Open the notebook?"
+        n "Open and read the notebook?"
     menu:
         "Yes.":
             jump notebook
@@ -449,23 +483,28 @@ label start:
         jump returntohallway
 
     label notebook:
-        #show turner
-        turner "George Cassidy previous criminal record. Involved in smuggling?"
-        turner "Lights on water. Small rowboat?"
-        turner "Found ship parts on north shore."
-        turner "Found gold coin on north shore."
-        turner "Bigger than just bootleg moonshine. What is going on?"
-        turner "Smith said saw someone in trees and peering through window."
-        turner "Men on island at night?"
-        turner "Croaking noise?"
-        turner "Frogs?"
-        #hide turner
-        show gordon
-        gordon "Michael..."
-        hide gordon
-        jump returntohallway
+    show turner
+    turner "George Cassidy previous criminal record. Involved in smuggling?"
+    turner "Lights on water. Small rowboat?"
+    turner "Found ship parts on north shore."
+    turner "Found gold coin on north shore."
+    turner "Bigger than just bootleg moonshine. What is going on?"
+    turner "Smith said saw someone in trees and peering through window."
+    turner "Men on island at night?"
+    turner "Croaking noise?"
+    turner "Frogs?"
+    hide turner
+    show gordon reg
+    gordon "Michael..."
+    hide gordon reg
+    jump returntohallway
 
     label choice_kitchen:
+        hide cottage
+        hide study
+        hide larder
+        hide bunkroom
+        show kitchen
         n "The door to the kitchen is slightly open. You see the pool of blood leading from the kitchen to the hallway. You push open the door."
         n "The kitchen has some dirty plates and a saucepot in the sink, a table with three chairs, and three doors: one leading outside, one to the hallway, and one to the study. A small wood-fired stove is located in the far corner; a still warm kettle sits on the hearth next to it."
         n "One of the chairs lie broken on the floor; there is a small pool of blood on the floor beside it."
@@ -493,15 +532,26 @@ label start:
         jump returntohallway
 
     label choice_larder:
+        hide cottage
+        hide study
+        hide kitchen
+        hide bunkroom
+        show larder
         n "You open the door. You sneeze as the dust hits your nose. You open your eyes to a room filled with shelves of food, all neatly stacked with all manner of dried, canned, and preserved foods -- enough to see three people through if cut off from the mainland for several months."
         jump returntohallway
 
     label serviceroom:
+        hide cottage
+        hide study
+        hide kitchen
+        hide bunkroom
+        hide larder
+        show service
         n "As you climb the stairs, you eventually reach the lighthouse's service room, located immediately below the lantern room. The mechanism used to turn the lamp can be seen mounted in the ceiling, and from the noise, it appears to still be working."
         n "A separate set of steps leads up through a trapdoor into the lantern room above. There are several boxes stored here; each contains a replacement bulb for the lighthouse's beacon."
         n "There is also a small workbench and a tool bag. On the workbench is a log of the various service checks performed on the lighthouse."
         n "Opposite the workbench is a table with a radio set in a semi-state of disrepair."
-        n "what is your next course of action?"
+        n "What is your next course of action?"
         jump serviceroomchoices
 
     label serviceroomchoices:
@@ -510,12 +560,12 @@ label start:
             jump servicelogs
         "Try to fix the radio.":
             jump fixradio
-        "Go up the lantern room.":
+        "Go up to the lantern room.":
             jump lanternroom
 
     label servicelogs:
         n "Majority of the checks are purely routine; however, one entry stands out. On February 12th, 1926, wiring problems caused the lighthouse's lamp bulb to prematurely burn out."
-        n "The log records how the electrical short cauesd by the bulb's failure, coupled with the severe storm, hampered the repairs, meaning the lighthouse was in darkness for several hours."
+        n "The log records how the electrical short caused by the bulb's failure, coupled with the severe storm, hampered the repairs, meaning the lighthouse was in darkness for several hours."
         jump serviceroomchoices
 
     label fixradio:
@@ -539,13 +589,16 @@ label start:
     gordon "Hello? Can you hear me?"
     gordon "Hello? Please come to Beacon Island!"
     n "The line disconnects."
-    hide gordon reg
-    show gordon mad
     gordon "Agh!"
     gordon "I've got to get upstairs."
     jump lanternroom
 
+    label lanternroom2:
+        hide service
+        show lantern
     label lanternroom:
+        hide service
+        show lantern
         n "You reach the lantern room to be greeted by a wet, bloody scene. Two panes of glass in the lantern room's windows have been broken somehow; their shattered remains crunch underfoot."
         n "The rain blows in through the gaps, making the metal decking slippery underfoot. Adding to the slipperiness is blood from the corpses of two men, along with that from two bizarre fish-creatures which lie inside the room's narrow confines."
         n "One of the dead fish-things is latched onto on of the men's necks by its teeth, even in death."
@@ -616,12 +669,18 @@ label start:
     label lockeddoor:
         n "You hear banging from the front door downstairs. What is your course of action?"
     menu:
-        "Barricade yourself and hope rescue gets to you first before whatever this thing is.":
+        "Barricade yourself and hope rescue gets to you first before whatever this thing is does first.":
             jump barricade
         "Go downstairs and position yourself for a surprise attack.":
-            jump fight
+            jump endfight
 
     label barricade:
+
+    label unlockedoor:
+
+    label endfight:
+        show cottage
+
 
 
 
