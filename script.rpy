@@ -33,7 +33,7 @@ $ str = 85
 $ dex = 75
 $ pow = 65
 $ painting = 21
-$ luck = 27
+$ luck = 50
 $ rescue = 0
 
 # The game starts here.
@@ -680,7 +680,7 @@ label start:
     hide gordon reg
     n "They are aware of your presence now. Good luck."
     n "Wait. Did you lock the door to the cottage? Roll for Luck."
-    if roll_result <= 27:
+    if roll_result <= 50:
         n "Lucky! You remember that you did lock the door after entering the cottage."
         jump lockeddoor
     else:
