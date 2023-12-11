@@ -772,14 +772,13 @@ label start:
     return
 
     label advantage:
-    show cottage
     show gordon reg at right
     show youngling at left
     n "Although at a massive disadvantage, you are quick enough to be able to reach into your holster. You aim at it."
     n "You downed him!"
     hide youngling
     show gordon reg
-    gordon "It's time to get out of here."
+    gordon "Goddamn it! It's time to get out of here."
     return
 
     label disadvantage:
