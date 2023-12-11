@@ -34,12 +34,13 @@ $ dex = 75
 $ pow = 65
 $ painting = 21
 $ luck = 27
+$ rescue = 0
 
 # The game starts here.
 
 label start:
 
-    show stormy sea
+
     show gordon reg
 
     gordon "I am a Special Agent for the Bureau of Investigation. My current assignment in this godforsaken hell hole is keeping an eye out for any illegal activity conducted along the popular east coast shipping routes."
@@ -50,6 +51,8 @@ label start:
     gordon "Ah, it's probably nothing. But if it is, why do I always get the feeling I'm being watched whenever I'm on the water?"
 
     hide gordon reg
+    show stormy sea
+    play sound "rain.ogg" fadeout 0.1 loop
 
     n "April 12th, 1926, 8:15pm. The Beacon Island lighthouse off the shore of Folly Point, Massachusetts, ceased to cast its light over the region’s dangerous rocky waters about 15 minutes ago."
     n "As a result, the SS Essex County, a mixed passenger and cargo vessel on which you are traveling to Rockport, has foundered on the rocks and incurred considerable damage to its hull. The ship is sinking, and the crew hurries you toward one of the many small rowboats acting as the ship’s lifeboats."
@@ -110,20 +113,21 @@ label start:
     label sthird_scene:
         hide stormy sea
         show sandbank
-        n "You get to the island quicker and stop on the small pier and dock."
-        n "As you arrive, you hear a faint churning of machinery nearby."
-        jump fourth_scene
+    play sound "generatorhum.mp3" volume 0.2 loop
+    n "You get to the island quicker and stop on the small pier and dock."
+    n "As you arrive, you hear a faint churning of machinery nearby."
+    jump fourth_scene
 
     label fthird_scene:
-        n "You are able to get yourself out from under the water. However, the intensity of the waves has knocked the wind out of you. Roll 1D3 for damage."
-     #roll_result3
+        n "You are able to get yourself out from under the water. However, the intensity of the waves has knocked the wind out of you."
         hide stormy sea
         show sandbank
-        n "You wash up on the island on the sandbank near the dock. As you arrive, you hear a faint churning of machinery nearby."
-        jump fourth_scene
+    play sound "generatorhum.mp3" volume 0.2 loop
+    n "You wash up on the island on the sandbank near the dock. As you arrive, you hear a faint churning of machinery nearby."
+    jump fourth_scene
 
     label fourth_scene:
-        n "What is that sound? Roll for Mechanical or Electrical Repair."
+    n "What is that sound? Roll for Mechanical or Electrical Repair."
     if roll_result <= 50:
         jump sfifth_scene
     else:
@@ -142,9 +146,10 @@ label start:
     label sixth_scene:
         hide sandbank
         show outside
-        n "You come across the lighthouse cottage entrance, with its front door slightly ajar, and a steady glow can be seen coming from within. The path continues around to the back of the lighthouse."
-        n "As you inspect the entrance, you see small, muddy, animal-like footprints in the front of the main cottage door. Beneath these are distinct boot prints."
-        n "Does this species seem familiar to you? Roll Zoology."
+    play sound "rain.ogg" loop
+    n "You come across the lighthouse cottage entrance, with its front door slightly ajar, and a steady glow can be seen coming from within. The path continues around to the back of the lighthouse."
+    n "As you inspect the entrance, you see small, muddy, animal-like footprints in the front of the main cottage door. Beneath these are distinct boot prints."
+    n "Does this species seem familiar to you? Roll Zoology."
     if roll_result <= 38:
         n "Success! You took a few zoology classes in the Academy, and you recognize the small footprints as duck-like in nature. However, there is something unusual about these footprints, as if they may be from an as yet unidentified species."
         jump seventh_scene
@@ -178,19 +183,21 @@ label start:
         n "As you walk through the thicket, the feeling of being watched is further intensified. You catch your breath. As a federal agent, situations like this should not phase you."
         n "Eventually, you stumble across a hideously mangled body - that of Michael Turner. It is a bloody mess; his innards have been dragged from his body, slashed, and trampled into the dirt. Besides the corpse lies a shattered lantern. It is evident he died recently."
         n "This is your friend. You lose [roll_result6] sanity."
-    if roll_result6 >= 5:
-        n "You are in pieces. You suffer a temporary sanity break as you mourn your friend who's been violently murdered. All you want is to leave this place."
-        show gordon insane
-        gordon "I can't take this anymore. This place. You people. I'm going, and there's nothing you can do to stop me!"
-        #creak*
-        gordon "Who is that?"
-        #*gunshot*
-        n "Game over. Restart."
-        return
+        if roll_result6 >= 5:
+            n "You are in pieces. You suffer a temporary sanity break as you mourn your friend who's been violently murdered. All you want is to leave this place."
+            jump earlyend
+        else:
+            n "Although you feel deep sadness for your friend's death, your experiences in the field has desensitized you to death. You dust yourself off and swear that you will avenge your fellow agent."
+            jump thicket_scene1
 
-    else:
-        n "Although you feel deep sadness for your friend's death, your experiences in the field has desensitized you to death. You dust yourself off and swear that you will avenge your fellow agent."
-        jump thicket_scene1
+    label earlyend:
+        show gordon reg
+    gordon "I can't take this anymore. This place. You people. I'm going, and there's nothing you can do to stop me!"
+    play sound "forestcrunch.mp3" fadeout 1
+    gordon "Who is that?"
+    play sound "gunshot.mp3"
+    n "Game over. Restart."
+    return
 
     label thicket_scene1:
         n "See if you can find out any information from his body. Roll for Medicine."
@@ -246,10 +253,10 @@ label start:
             jump choice_generator1
 
     label choice_generator1:
-        n "You open the door to the shed. You can see that it contains a running electric generator containing gas and firewood."
-        n "You also notice that there is a leak in the generator shed's roof. Raindrops spatter through it onto the electrical equipment below."
-        n "You do not have the necessary materials to repair the roof. Maybe you should check the other shed?"
-        jump choice_sheds2
+    n "You open the door to the shed. You can see that it contains a running electric generator containing gas and firewood."
+    n "You also notice that there is a leak in the generator shed's roof. Raindrops spatter through it onto the electrical equipment below."
+    n "You do not have the necessary materials to repair the roof. Maybe you should check the other shed?"
+    jump choice_sheds2
 
     label choice_sheds2:
 
@@ -311,17 +318,18 @@ label start:
         hide sheds
         hide outside
         show cottage
-        n "You make your way into the cottage. The rain is getting worse, after all."
-        n "You fully open the door. Beyond the partially open front door, a hallway leads to the cottage's four rooms, two on each of the wide passageway."
-        n "At the end of the hallway is a winding staircase leading to the lighthouse's service room. Although all of the rooms appear to be fitted with electric light bulbs, only the study's lights are currently turned on."
-        n "The first thing you notice is the three coat hooks by the door, only one of which currently has a well-worn jacket hanging from it. Two pairs of rain boots stand in a shallow tray just beneath the coat hooks; there is space for another pair, while a pair of indoor shoes sits beside the tray."
-        n "Two oil lanterns hang from hooks next to the oilskin; there is also an empty hook, suggesting one lamp is missing."
-        n "Do you see anything else in the hallway? Roll a Spot Hidden."
+    play sound "ambience.mp3" loop volume 0.1
+    n "You make your way into the cottage. The rain is getting worse, after all."
+    n "You fully open the door. Beyond the partially open front door, a hallway leads to the cottage's four rooms, two on each of the wide passageway."
+    n "At the end of the hallway is a winding staircase leading to the lighthouse's service room. Although all of the rooms appear to be fitted with electric light bulbs, only the study's lights are currently turned on."
+    n "The first thing you notice is the three coat hooks by the door, only one of which currently has a well-worn jacket hanging from it. Two pairs of rain boots stand in a shallow tray just beneath the coat hooks; there is space for another pair, while a pair of indoor shoes sits beside the tray."
+    n "Two oil lanterns hang from hooks next to the oilskin; there is also an empty hook, suggesting one lamp is missing."
+    n "Do you see anything else in the hallway? Roll a Spot Hidden."
     if roll_result <= 65:
         n "You see two bullets lodged in the hallway floor."
         jump eighth_scene
     else:
-        n "Failure! You do not see anything else of interest in the hallway."
+        n "You do not see anything else of interest in the hallway."
         jump eighth_scene
 
     label eighth_scene:
@@ -353,9 +361,11 @@ label start:
         hide larder
         hide bunkroom
         show study
-        n "You open the door to what looks like a study. It contains three armchairs, located in roughly the center of the room. In addition to the hall doorway, there is another door leading to the third, bloodied room."
-        n "In terms of furniture, besides the armchairs, there is a table to the left of the hall door and a roll-writing desk on the outer wall, close to the other door. Both have their own chair next to them. The one by the writing desk currently lies on the floor."
-        n "Can you deduce more information from this scene? Roll an Intelligence."
+    play sound "doorcreak.mp3"
+    n "You open the door to what looks like a study. It contains three armchairs, located in roughly the center of the room. In addition to the hall doorway, there is another door leading to the third, bloodied room."
+    play sound "ambience.mp3" loop volume 0.1
+    n "In terms of furniture, besides the armchairs, there is a table to the left of the hall door and a roll-writing desk on the outer wall, close to the other door. Both have their own chair next to them. The one by the writing desk currently lies on the floor."
+    n "Can you deduce more information from this scene? Roll an Intelligence."
     if roll_result <= 65:
         n "From your investigative training in the Academy, you can deduce that whoever was sitting on that chair stood up in a hurry, knocking it over in the process."
         jump study2
@@ -461,9 +471,11 @@ label start:
         hide larder
         hide kitchen
         show bunkroom
-        n "You open the door. This room looks like a bunkroom. It contains three neatly-made beds. A large pile of books is stacked tidily in one corner of the room. There are also three large cupboards, each holding soap towels, fresh bedding, and extra blankets."
-        n "Those belonging to Turner and Cassidy contain warious articles of clothing along with a few small personal effects; the one belonging to Smith contains only the linen and towels."
-        n "Do you see anything in the room? Roll for Spot Hidden."
+    play sound "doorcreak.mp3"
+    n "You open the door. This room looks like a bunkroom. It contains three neatly-made beds. A large pile of books is stacked tidily in one corner of the room. There are also three large cupboards, each holding soap towels, fresh bedding, and extra blankets."
+    play sound "ambience.mp3" loop volume 0.1
+    n "Those belonging to Turner and Cassidy contain warious articles of clothing along with a few small personal effects; the one belonging to Smith contains only the linen and towels."
+    n "Do you see anything in the room? Roll for Spot Hidden."
     if roll_result <= 75:
         jump bunkroom1
     else:
@@ -505,10 +517,12 @@ label start:
         hide larder
         hide bunkroom
         show kitchen
-        n "The door to the kitchen is slightly open. You see the pool of blood leading from the kitchen to the hallway. You push open the door."
-        n "The kitchen has some dirty plates and a saucepot in the sink, a table with three chairs, and three doors: one leading outside, one to the hallway, and one to the study. A small wood-fired stove is located in the far corner; a still warm kettle sits on the hearth next to it."
-        n "One of the chairs lie broken on the floor; there is a small pool of blood on the floor beside it."
-        n "To learn more about the scene, roll for Intelligence."
+    play sound "doorcreak.mp3"
+    n "The door to the kitchen is slightly open. You see the pool of blood leading from the kitchen to the hallway. You push open the door."
+    play sound "ambience.mp3" loop volume 0.1
+    n "The kitchen has some dirty plates and a saucepot in the sink, a table with three chairs, and three doors: one leading outside, one to the hallway, and one to the study. A small wood-fired stove is located in the far corner; a still warm kettle sits on the hearth next to it."
+    n "One of the chairs lie broken on the floor; there is a small pool of blood on the floor beside it."
+    n "To learn more about the scene, roll for Intelligence."
     if roll_result <= 65:
         jump kitchen1
     else:
@@ -537,8 +551,10 @@ label start:
         hide kitchen
         hide bunkroom
         show larder
-        n "You open the door. You sneeze as the dust hits your nose. You open your eyes to a room filled with shelves of food, all neatly stacked with all manner of dried, canned, and preserved foods -- enough to see three people through if cut off from the mainland for several months."
-        jump returntohallway
+    play sound "doorcreak.mp3"
+    n "You open the door. You sneeze as the dust hits your nose. You open your eyes to a room filled with shelves of food, all neatly stacked with all manner of dried, canned, and preserved foods -- enough to see three people through if cut off from the mainland for several months."
+    play sound "ambience.mp3" loop volume 0.1
+    jump returntohallway
 
     label serviceroom:
         hide cottage
@@ -577,7 +593,9 @@ label start:
         jump serviceroomchoices
 
     label fixedradio:
-        n "You fixed the radio. You may call for help to the local coastguard."
+    $ rescue += 1
+    n "You fixed the radio. You may call for help to the local coastguard."
+    play sound "ringing.mp3"
     n "Ring..."
     show gordon reg
     gordon "Hello? My name is Gordon Hobbs, I work for the Bureau of Investigation. You need to send rescue to Beacon Island immediately! There are - "
@@ -599,10 +617,11 @@ label start:
     label lanternroom:
         hide service
         show lantern
-        n "You reach the lantern room to be greeted by a wet, bloody scene. Two panes of glass in the lantern room's windows have been broken somehow; their shattered remains crunch underfoot."
-        n "The rain blows in through the gaps, making the metal decking slippery underfoot. Adding to the slipperiness is blood from the corpses of two men, along with that from two bizarre fish-creatures which lie inside the room's narrow confines."
-        n "One of the dead fish-things is latched onto on of the men's necks by its teeth, even in death."
-        n "You lose [roll_result6] sanity."
+    play sound "ambience.mp3" loop volume 0.1
+    n "You reach the lantern room to be greeted by a wet, bloody scene. Two panes of glass in the lantern room's windows have been broken somehow; their shattered remains crunch underfoot."
+    n "The rain blows in through the gaps, making the metal decking slippery underfoot. Adding to the slipperiness is blood from the corpses of two men, along with that from two bizarre fish-creatures which lie inside the room's narrow confines."
+    n "One of the dead fish-things is latched onto on of the men's necks by its teeth, even in death."
+    n "You lose [roll_result6] sanity."
     if roll_result6 <= 5:
         jump lanternroom1
     else:
@@ -657,56 +676,117 @@ label start:
 
     label startofattack:
     show gordon reg
-    gordon "Damn it. I've got to call for help! What the fuck is going on here?"
+    gordon "Damn it. I've got to call for help! What the hell is going on here?"
+    hide gordon reg
+    n "They are aware of your presence now. Good luck."
     n "Wait. Did you lock the door to the cottage? Roll for Luck."
     if roll_result <= 27:
         n "Lucky! You remember that you did lock the door after entering the cottage."
         jump lockeddoor
     else:
         n "Uh oh."
-        jump unlockeddoor
+        jump unlockedoor
 
     label lockeddoor:
-        n "You hear banging from the front door downstairs. What is your course of action?"
+        n "You hear banging from the front door downstairs. What is your next course of action?"
     menu:
-        "Barricade yourself and hope rescue gets to you first before whatever this thing is does first.":
+        "Barricade yourself and hope for the best.":
             jump barricade
         "Go downstairs and position yourself for a surprise attack.":
             jump endfight
 
     label barricade:
+        n "You are not taking any chances. You figure that your best chances would be up here, waiting for rescue or until the creature stops."
+        n "Did you fix the radio?"
+    if $ rescue == 1:
+        jump rescuebar
+    else:
+        jump norescuebar
+
+    label rescuebar:
+        n "Yes! You fixed the radio. But is rescue coming?"
+        n "You catch your breath. You just have to hold out until rescue comes. Hopefully."
+        n "You block the door to the lantern room as much as you can. You hear the front door break open."
+        n "You hear loud, rapid steps coming up the stairs."
+        n "It's here."
+        n "As the creature bangs on the door, you see bright lights on the water."
+    show gordon reg
+    gordon "The coastguard!"
+    hide gordon
+    n "Suddenly the banging stops. You hear loud, rapid steps on the stairs."
+    show gordon reg
+    hide lantern
+    show outside
+    show gordon reg at left
+    show coastguard at right
+    coastguard "Sir? What happened here?"
+    return
+
+    label norescuebar:
+        n "Yes! You fixed the radio. But is rescue coming?"
+        n "You catch your breath. You just have to hold out until rescue comes. Hopefully."
+        n "You block the door to the lantern room as much as you can. You hear the front door break open."
+        n "You hear loud, rapid steps coming up the stairs."
+        n "It's here."
+        n "The creature bangs on the door."
+
 
     label unlockedoor:
+        n "You remember that you did not lock the front door to the cottage."
+        n "You hear loud, rapid steps coming up the stairs."
+        n "It's here."
+    show youngling at left
+    show gordon reg at right
+    n "You are at a disadvantage. Ten points will be added to ALL your roll results."
+    n "Who attacks first? Roll for Dexterity."
+    if roll_result <= 65:
+        jump advantage
+    else:
+        jump disadvantage
 
     label endfight:
-        show cottage
+    show cottage
+    hide lantern
+    n "You position yourself on the fourth step of the stairs, waiting for the creature to barge its way into the door."
+    n "You have the element of surprise. Although a handgun roll is needed, you have a massive advantage."
+        #door open
+    show youngling at left
+    show gordon reg at right
+    if roll_result <= 70:
+        jump successfight
+    else:
+        jump failedfight
 
+    label successfight:
+        n "Yes! Your shot connects and the creature falls to its death."
+    show gordon
+    hide youngling
+    gordon "My god.."
+    return
 
+    label failedfight:
+        n "Wow. You failed."
+        n "You miss the shot."
+        n "The youngling throws one of its darts at you. It hits you straight in the heart."
+        n "You collapse."
+    return
 
+    label advantage:
+    show cottage
+    show gordon reg at right
+    show youngling at left
+    n "Although at a massive disadvantage, you are quick enough to be able to reach into your holster. You aim at it."
+    n "You downed him!"
+    hide youngling
+    show gordon reg
+    gordon "It's time to get out of here."
+    return
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    label disadvantage:
+        n "The creature is too quick. You are caught completely by surprise."
+        n "It jumps at you, cutting its way into your body."
+        n "Your vision starts to fade as you lie there in agony."
+    return
 
 
 
@@ -714,4 +794,4 @@ label start:
 
     # This ends the game.
 
-    return
+    #return
