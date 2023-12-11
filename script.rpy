@@ -47,7 +47,7 @@ label start:
     gordon "So far, there's not been much to report, with the exception of one unmarked vessel spotted passing Rockport during a storm in early February, which seems to have vanished without a trace."
     gordon "A fellow undercover agent and friend, Michael Turner, has been stationed up on Beacon Island. What better place to keep an eye on passing ships than from a lighthouse?"
     gordon "He got a message to me that he'd uncovered some sort of evidence of smuggling, but he didn't go into any details. He also asked to meet me in Rockport tomorrow morning, so here I am, on a late boat heading for our rendesvous."
-    gordon "I really hope he's found something that would signal an end to my time here. This whole region gives me the creeps. Maybe it's just my imagination; maybe I've just been involved intoo many weird cases in the past."
+    gordon "I really hope he's found something that would signal an end to my time here. This whole region gives me the creeps. Maybe it's just my imagination; maybe I've just been involved in too many weird cases in the past."
     gordon "Ah, it's probably nothing. But if it is, why do I always get the feeling I'm being watched whenever I'm on the water?"
 
     hide gordon reg
@@ -593,6 +593,7 @@ label start:
         jump serviceroomchoices
 
     label fixedradio:
+    $ rescue = 0
     $ rescue += 1
     n "You fixed the radio. You may call for help to the local coastguard."
     play sound "ringing.mp3"
@@ -688,7 +689,8 @@ label start:
         jump unlockedoor
 
     label lockeddoor:
-        n "You hear banging from the front door downstairs. What is your next course of action?"
+    play sound "doorbang.mp3"
+    n "You hear banging from the front door downstairs. What is your next course of action?"
     menu:
         "Barricade yourself and hope for the best.":
             jump barricade
@@ -698,28 +700,33 @@ label start:
     label barricade:
         n "You are not taking any chances. You figure that your best chances would be up here, waiting for rescue or until the creature stops."
         n "Did you fix the radio?"
-    if $ rescue == 1:
+    if rescue == 1:
         jump rescuebar
     else:
         jump norescuebar
 
     label rescuebar:
-        n "Yes! You fixed the radio. But is rescue coming?"
-        n "You catch your breath. You just have to hold out until rescue comes. Hopefully."
-        n "You block the door to the lantern room as much as you can. You hear the front door break open."
-        n "You hear loud, rapid steps coming up the stairs."
-        n "It's here."
-        n "As the creature bangs on the door, you see bright lights on the water."
+    play sound "ambience.mp3"
+    n "Yes! You fixed the radio. But is rescue coming?"
+    n "You catch your breath. You just have to hold out until rescue comes. Hopefully."
+    n "You block the door to the lantern room as much as you can. You hear the front door break open."
+    n "You hear loud, rapid steps coming up the stairs."
+    n "It's here."
+    play sound "doorbang.mp3"
+    n "As the creature bangs on the door, you see bright lights on the water."
     show gordon reg
     gordon "The coastguard!"
-    hide gordon
+    hide gordon reg
+    play sound "ambience.mp3"
     n "Suddenly the banging stops. You hear loud, rapid steps on the stairs."
-    show gordon reg
     hide lantern
     show outside
     show gordon reg at left
     show coastguard at right
     coastguard "Sir? What happened here?"
+    hide gordon reg
+    hide coastguard
+    n "You survived."
     return
 
     label norescuebar:
@@ -728,8 +735,14 @@ label start:
         n "You block the door to the lantern room as much as you can. You hear the front door break open."
         n "You hear loud, rapid steps coming up the stairs."
         n "It's here."
-        n "The creature bangs on the door."
-
+    play sound "doorbang.mp3"
+    n "The creature bangs on the door."
+    n "The door breaks open."
+    n "Since you have advantage, you are able to make the first attack. Roll for Handgun."
+    if roll_result <= 50:
+        jump successfight
+    else:
+        jump failedfight
 
     label unlockedoor:
         n "You remember that you did not lock the front door to the cottage."
@@ -749,7 +762,6 @@ label start:
     hide lantern
     n "You position yourself on the fourth step of the stairs, waiting for the creature to barge its way into the door."
     n "You have the element of surprise. Although a handgun roll is needed, you have a massive advantage."
-        #door open
     show youngling at left
     show gordon reg at right
     if roll_result <= 70:
@@ -762,6 +774,7 @@ label start:
     show gordon
     hide youngling
     gordon "My god.."
+    n "You survived."
     return
 
     label failedfight:
@@ -769,6 +782,7 @@ label start:
         n "You miss the shot."
         n "The youngling throws one of its darts at you. It hits you straight in the heart."
         n "You collapse."
+        n "Game over. Restart."
     return
 
     label advantage:
@@ -779,18 +793,12 @@ label start:
     hide youngling
     show gordon reg
     gordon "Goddamn it! It's time to get out of here."
+    n "You survived."
     return
 
     label disadvantage:
         n "The creature is too quick. You are caught completely by surprise."
         n "It jumps at you, cutting its way into your body."
         n "Your vision starts to fade as you lie there in agony."
+        n "Game over. Restart."
     return
-
-
-
-
-
-    # This ends the game.
-
-    #return
