@@ -77,7 +77,7 @@ label start:
     $ roll_result6 = renpy.random.randint(1,6)
 
     # Scene start
-
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 65:
         jump success_scene1
     else:
@@ -94,6 +94,7 @@ label start:
 
     label second_scene:
         n "Can you get yourself out of the wreckage? Please roll for Pilot Boat."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 74:
         jump success_scene2
     else:
@@ -105,6 +106,7 @@ label start:
 
     label failure_scene2:
         n "Failure! You try to force the rowboat out of the wreckage, but you end up damaging the boat. You fall off. Roll for Swim as you now have to swim to the island."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 60:
         jump sthird_scene
     else:
@@ -128,6 +130,7 @@ label start:
 
     label fourth_scene:
     n "What is that sound? Roll for Mechanical or Electrical Repair."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 50:
         jump sfifth_scene
     else:
@@ -150,6 +153,7 @@ label start:
     n "You come across the lighthouse cottage entrance, with its front door slightly ajar, and a steady glow can be seen coming from within. The path continues around to the back of the lighthouse."
     n "As you inspect the entrance, you see small, muddy, animal-like footprints in the front of the main cottage door. Beneath these are distinct boot prints."
     n "Does this species seem familiar to you? Roll Zoology."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 38:
         n "Success! You took a few zoology classes in the Academy, and you recognize the small footprints as duck-like in nature. However, there is something unusual about these footprints, as if they may be from an as yet unidentified species."
         jump seventh_scene
@@ -183,6 +187,7 @@ label start:
         n "As you walk through the thicket, the feeling of being watched is further intensified. You catch your breath. As a federal agent, situations like this should not phase you."
         n "Eventually, you stumble across a hideously mangled body - that of Michael Turner. It is a bloody mess; his innards have been dragged from his body, slashed, and trampled into the dirt. Besides the corpse lies a shattered lantern. It is evident he died recently."
         n "This is your friend. You lose [roll_result6] sanity."
+        $ roll_result = renpy.random.randint(1,100)
         if roll_result6 >= 5:
             n "You are in pieces. You suffer a temporary sanity break as you mourn your friend who's been violently murdered. All you want is to leave this place."
             jump earlyend
@@ -201,11 +206,13 @@ label start:
 
     label thicket_scene1:
         n "See if you can find out any information from his body. Roll for Medicine."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 35:
         n "Success! Your basic medicine training in the Academy allowed you to infer that Turner was probably torn apart by some kind of animal, as there are odd teeth and claw marks on the body. He also appears to have died very recently; within the last hour, in fact."
     else:
         n "Failure! Although you are proficient in medicine, you are too shaken to be able to conduct an accurate autopsy."
         jump thicket_scene2
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result >= 7:
         n "Extreme success! You, by some miracle, find small needles embedded deep into his skin. It appears to be some sort of animal spine, and are quite probably poisonous. Your training has allowed you to identify possible poisonous weapons that can be used against you."
 
@@ -289,6 +296,7 @@ label start:
         jump choice_generator4
 
     label choice_generator4:
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 25:
         n "Success! You are able to fix the generator!"
         jump choice_cottage
@@ -325,6 +333,7 @@ label start:
     n "The first thing you notice is the three coat hooks by the door, only one of which currently has a well-worn jacket hanging from it. Two pairs of rain boots stand in a shallow tray just beneath the coat hooks; there is space for another pair, while a pair of indoor shoes sits beside the tray."
     n "Two oil lanterns hang from hooks next to the oilskin; there is also an empty hook, suggesting one lamp is missing."
     n "Do you see anything else in the hallway? Roll a Spot Hidden."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 65:
         n "You see two bullets lodged in the hallway floor."
         jump eighth_scene
@@ -334,6 +343,7 @@ label start:
 
     label eighth_scene:
         n "Can you find more information about the bullets? Roll Handgun."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 50:
         n "The bullets were fired from someone positioned a couple of steps up the winding stairwell."
     else:
@@ -366,6 +376,7 @@ label start:
     play sound "ambience.mp3" loop volume 0.1
     n "In terms of furniture, besides the armchairs, there is a table to the left of the hall door and a roll-writing desk on the outer wall, close to the other door. Both have their own chair next to them. The one by the writing desk currently lies on the floor."
     n "Can you deduce more information from this scene? Roll an Intelligence."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 65:
         n "From your investigative training in the Academy, you can deduce that whoever was sitting on that chair stood up in a hurry, knocking it over in the process."
         jump study2
@@ -388,6 +399,7 @@ label start:
 
     label study3:
         n "With a successful Zoology and/or Painting roll, you can find out more about the painting."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 38:
         n "Success! You can tell that the shadow's eyes look bulbous and appear to be placed almost to the side of its head, similar to the anatomy of a fish or a frog."
         jump choice_painting
@@ -424,6 +436,7 @@ label start:
             jump returntohallway
 
     label choice_yes3:
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 85:
         n "Success! You manage to force the drawer open. It contains a small journal belonging to George Cassidy. There is a rough sketch of an obelisk on the journal's cover."
         n "Do you want to read the journal?"
@@ -476,6 +489,7 @@ label start:
     play sound "ambience.mp3" loop volume 0.1
     n "Those belonging to Turner and Cassidy contain warious articles of clothing along with a few small personal effects; the one belonging to Smith contains only the linen and towels."
     n "Do you see anything in the room? Roll for Spot Hidden."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 75:
         jump bunkroom1
     else:
@@ -523,6 +537,7 @@ label start:
     n "The kitchen has some dirty plates and a saucepot in the sink, a table with three chairs, and three doors: one leading outside, one to the hallway, and one to the study. A small wood-fired stove is located in the far corner; a still warm kettle sits on the hearth next to it."
     n "One of the chairs lie broken on the floor; there is a small pool of blood on the floor beside it."
     n "To learn more about the scene, roll for Intelligence."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 65:
         jump kitchen1
     else:
@@ -538,6 +553,7 @@ label start:
 
     label kitchen3:
         n "Is there anything unusual about the blood? Can you find out more information? Roll for Medicine."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 35:
         n "The pool of blood is recent and formed within the last hour. There is something not quite right about the blood, like it may not be human in origin."
         jump returntohallway
@@ -586,6 +602,7 @@ label start:
 
     label fixradio:
         n "A successful Electric Repair roll fixes the radio with ease. Roll for Electric Repair."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 50:
         jump fixedradio
     else:
@@ -623,6 +640,7 @@ label start:
     n "The rain blows in through the gaps, making the metal decking slippery underfoot. Adding to the slipperiness is blood from the corpses of two men, along with that from two bizarre fish-creatures which lie inside the room's narrow confines."
     n "One of the dead fish-things is latched onto on of the men's necks by its teeth, even in death."
     n "You lose [roll_result6] sanity."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result6 <= 5:
         jump lanternroom1
     else:
@@ -634,6 +652,7 @@ label start:
         n "He also seems to be suffering from some sort of skin condition, going by his gray, rough complexion."
         n "His bulging, watery eyes stare sightlessly in the direction of Cassidy's corpse."
         n "To find more information from the body, roll for Zoology."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 38:
         jump fishbody1
     else:
@@ -655,6 +674,7 @@ label start:
 
     label lanternroom3:
         n "Can you find information about these bodies? Roll for Zoology again."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 38:
         n "Success! You see that the bullets which entered both creatures only killed them because they went into the softest, fleshiest, most vulnerable parts of their bodies."
         n "The rest of their scaly exteriors, although penetrable, are coarse and tough, no doubt providing the creatures with a form of natural armor. Evidently, Cassidy was a 'lucky' shot, for all the good it did him."
@@ -667,6 +687,7 @@ label start:
         n "The final corpse is that belonging to Cassidy. Hidden under the late lighthouse keeper's shirt is a heavy purse full of the strange gold coins, tied around his neck on a thick leather cord. A six-shooter, a Colt M1877, is held firmly in his still-warm hands."
         n "All of the bullets in the chamber have been spent. The revolver appears to match the size and shape of the one missing from the desk drawer downstairs. Taking into account the two bullets in the strange man, and the two in the fish-creatures, two bullets are still unaccounted for."
         n "Can you find the other bullets? Roll for Spot Hidden."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result >= 65:
         n "Success! You identify a bullet hole in the lamp's lens; the bullet which caused it appears to have shattered the bulb inside before carrying on through to smash one of the lantern room's missing panes of glass."
         n "This, at least, explains why the lighthouse beacon stopped working at 8 pm this evening. It can easily be surmised that the second broken pane was destroyed by the other bullet."
@@ -681,6 +702,7 @@ label start:
     hide gordon reg
     n "They are aware of your presence now. Good luck."
     n "Wait. Did you lock the door to the cottage? Roll for Luck."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 50:
         n "Lucky! You remember that you did lock the door after entering the cottage."
         jump lockeddoor
@@ -739,6 +761,7 @@ label start:
     n "The creature bangs on the door."
     n "The door breaks open."
     n "Since you have advantage, you are able to make the first attack. Roll for Handgun."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 50:
         jump successfight
     else:
@@ -752,6 +775,7 @@ label start:
     show gordon reg at right
     n "You are at a disadvantage. Ten points will be added to ALL your roll results."
     n "Who attacks first? Roll for Dexterity."
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 65:
         jump advantage
     else:
@@ -764,6 +788,7 @@ label start:
     n "You have the element of surprise. Although a handgun roll is needed, you have a massive advantage."
     show youngling at left
     show gordon reg at right
+    $ roll_result = renpy.random.randint(1,100)
     if roll_result <= 70:
         jump successfight
     else:
