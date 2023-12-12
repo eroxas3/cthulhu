@@ -1,4 +1,7 @@
-# cthulhu
+# The Lightless Beacon video: https://youtu.be/b-Kda5E5scU 
+
+I genuinely really enjoyed making this project. The hardest challenge I encountered was making sure that the different decisions would lead to different outcomes because two different choices can lead to the same outcome and vice versa. Thankfully, however, the choice map I drew before starting the coding process really helped because it allowed me to organize all the different outcomes. 
+
 
 # Preproposal
 
