@@ -2,6 +2,7 @@
 
 I genuinely really enjoyed making this project. The hardest challenge I encountered was making sure that the different decisions would lead to different outcomes because two different choices can lead to the same outcome and vice versa. Thankfully, however, the choice map I drew before starting the coding process really helped because it allowed me to organize all the different outcomes. 
 
+I used the story of The Lightless Beacon, a Call of Cthulhu campaign. I am currently running the same campaign with my friends, so I had the idea to turn it into a visual novel for my final project. 
 
 # Preproposal
 
